@@ -2,23 +2,27 @@
 
 A template for creating data-driven presentations using Reveal.js and Chart.js.
 
+## Prerequisites
+
+This template is designed to work with [Cursor IDE](https://cursor.sh/), a code editor with built-in AI capabilities. The presentation generation process relies on Cursor's AI agent to interpret your data and create the presentation.
+
 ## Project Structure
 
 ```
 .
-├── assets/                  # Shared assets for all 
+├── assets/                  # Shared assets for all presentations
 │   ├── css/                 # CSS files
 │   ├── js/                  # JavaScript files
 │   │   ├── chart.min.js     # Chart.js library
 │   │   └── reveal.js/       # Reveal.js library
 │   └── fonts/               # Font files
-├── projects/                # Individual presentation 
+├── projects/                # Individual presentation projects
 │   └── {project_name}/      # Project-specific directory
 │       ├── data/            # Data files for the project
-│       ├── agenda.md        # High-level presentation 
-│       ├── detailed_plan.md # Detailed visualization plan
-│       ├── instructions.md  # (Optional) Additional
-│       └── index.html       # Generated presentation
+│       ├── agenda.md        # (Generated) High-level presentation outline
+│       ├── detailed_plan.md # (Generated) Detailed visualization plan
+│       ├── instructions.md  # (Optional) Additional instructions
+│       └── index.html       # (Generated) Final presentation
 └── README.md                # This file
 ```
 
@@ -57,19 +61,23 @@ This file is completely optional and not required for the presentation generatio
 
 The presentation generation process follows these steps:
 
-1. **Create Agenda**: Run the command to create a high-level outline
+1. **Create Agenda**: In the Cursor IDE chat, type the following prompt:
    ```
    Create presentation for my_project
    ```
    This will generate `projects/my_project/agenda.md` with a structured outline.
+   
+   **Review and Edit**: You can review and edit the agenda.md file before proceeding to the next step to customize the presentation structure.
 
-2. **Create Detailed Plan**: Run the command to expand the agenda into a detailed plan
+2. **Create Detailed Plan**: In the Cursor IDE chat, type the following prompt:
    ```
    Proceed to next step for my_project
    ```
    This will generate `projects/my_project/detailed_plan.md` with specific visualization details.
+   
+   **Review and Edit**: You can review and edit the detailed_plan.md file before proceeding to the next step to customize the visualization details.
 
-3. **Generate Slides**: Run the command again to create the final presentation
+3. **Generate Slides**: In the Cursor IDE chat, type the following prompt again:
    ```
    Proceed to next step for my_project
    ```
@@ -122,6 +130,7 @@ The template supports various chart types from Chart.js:
 
 ## Requirements
 
+- [Cursor IDE](https://cursor.com/) with AI capabilities
 - Modern web browser (Chrome, Firefox, Safari, Edge)
 - No server required - presentations work with local files
 

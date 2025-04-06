@@ -18,16 +18,16 @@ Before generating `projects/{project_name}/index.html`:
 
 1. Determine which JavaScript and CSS files are required for the presentation (e.g., Reveal.js core, plugins, themes, Chart.js, highlight.js, etc.).
 2. For each required asset:
-   - Check if the file exists in the root-level `assets/` folder.
+   - Check if the file exists recursively in the root-level `assets/` folder.
+    - Create a list of full relative paths to these asset files **from the perspective of `projects/{project_name}/index.html`**.
+      - Example entries:
+        - `../../assets/reveal.js`
+        - `../../assets/chart.min.js`
+        - `../../assets/reveal.css`
+        - `../../assets/theme/black.css`
+        - `../../assets/plugin/markdown/markdown.js`
    - If not, download it from the official source and save it into `assets/`.
-3. Create a list of full relative paths to these asset files **from the perspective of `projects/{project_name}/index.html`**.
-   - Example entries:
-     - `../../assets/reveal.js`
-     - `../../assets/chart.min.js`
-     - `../../assets/reveal.css`
-     - `../../assets/theme/black.css`
-     - `../../assets/plugin/markdown/markdown.js`
-4. Use only these local paths when embedding `<script>` and `<link>` tags in `index.html`.
+3. Use only these local paths when embedding `<script>` and `<link>` tags in `index.html`.
 
 ### Phase 2: HTML Generation
 
@@ -38,8 +38,37 @@ Before generating `projects/{project_name}/index.html`:
 - Do **not** generate or reference any external CDN URLs.
 - Do **not** create individual slide files.
 - **Always use the `white.css` theme for Reveal.js**
-- **To avoid vertical overflow, layout content horizontally whenever possible**:
+- **Avoid vertical overflow. Layout the content horizontally whenever possible**:
   - Avoid stacking too many elements vertically on a single slide.
+- **Always show values directly on charts**:
+  - For bar charts:
+    - Add values above each bar
+    - Use black text for visibility
+    - Format monetary values with dollar signs and 2 decimal places
+    - Format percentages with 1 decimal place and % symbol
+  - For pie charts:
+    - Add values in the center of each slice
+    - Use white text with bold font for visibility
+    - Show both count and percentage: "value (percentage%)"
+  - Implement using Chart.js animation callbacks:
+    ```javascript
+    animation: {
+        onComplete: function(animation) {
+            const chart = animation.chart;
+            const ctx = chart.ctx;
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            chart.data.datasets.forEach(function(dataset, i) {
+                chart.getDatasetMeta(i).data.forEach(function(bar, index) {
+                    const value = dataset.data[index];
+                    ctx.fillStyle = '#000';
+                    ctx.fillText(value, bar.x, bar.y - 5);
+                });
+            });
+        }
+    }
+    ```
 
 ### Data Handling:
 

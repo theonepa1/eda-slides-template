@@ -4,31 +4,72 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Data Analysis</title>
+    <link rel="stylesheet" href="../../assets/js/reveal.js/dist/reset.css">
     <link rel="stylesheet" href="../../assets/js/reveal.js/dist/reveal.css">
-    <link rel="stylesheet" href="../../assets/js/reveal.js/dist/theme/white.css">
-    <script src="../../assets/js/reveal.js/dist/reveal.js"></script>
+    <link rel="stylesheet" href="../../assets/js/reveal.js/dist/theme/white.css" id="theme">
     <script src="../../assets/js/chart.min.js"></script>
+    <script src="../../assets/js/reveal.js/dist/reveal.js"></script>
     <style>
         .reveal {
             font-size: 24px;
         }
+        .reveal h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+        .reveal h2 {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+        }
+        .reveal h3 {
+            font-size: 1.4em;
+            margin-bottom: 0.5em;
+        }
+        .reveal p {
+            margin-bottom: 0.5em;
+        }
+        .reveal table {
+            font-size: 0.8em;
+        }
+        .reveal .slides section {
+            padding: 20px;
+        }
         .chart-container {
+            position: relative;
+            height: 300px;
             width: 100%;
-            height: 400px;
-            margin: 20px 0;
         }
         .two-column {
             display: flex;
             justify-content: space-between;
         }
-        .column {
+        .two-column > div {
             flex: 1;
             margin: 0 10px;
         }
-        .metric {
-            font-size: 2em;
-            color: #2c3e50;
-            margin: 20px 0;
+        .three-column {
+            display: flex;
+            justify-content: space-between;
+        }
+        .three-column > div {
+            flex: 1;
+            margin: 0 10px;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .metric-label {
+            font-size: 0.9em;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -38,10 +79,30 @@
             <!-- Slide 1: Introduction -->
             <section>
                 <h1>Customer Data Analysis</h1>
-                <div class="metric">
-                    <p>Total Customers: <span id="totalCustomers">10</span></p>
-                    <p>Overall Churn Rate: <span id="churnRate">30%</span></p>
-                    <p>Average Monthly Spend: <span id="avgSpend">$43.59</span></p>
+                <div class="two-column">
+                    <div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="total-customers">10</div>
+                            <div class="metric-label">Total Customers</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="avg-spend">$42.59</div>
+                            <div class="metric-label">Average Monthly Spend</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="churn-rate">30%</div>
+                            <div class="metric-label">Churn Rate</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Analysis Goals</h3>
+                        <ul>
+                            <li>Understand customer demographics</li>
+                            <li>Analyze subscription patterns</li>
+                            <li>Identify churn risk factors</li>
+                            <li>Optimize pricing strategies</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -49,11 +110,15 @@
             <section>
                 <h2>Customer Demographics Overview</h2>
                 <div class="two-column">
-                    <div class="column">
-                        <canvas id="ageChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="age-distribution"></canvas>
+                        </div>
                     </div>
-                    <div class="column">
-                        <canvas id="genderChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="gender-distribution"></canvas>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -61,20 +126,53 @@
             <!-- Slide 3: Geographic Distribution -->
             <section>
                 <h2>Global Customer Distribution</h2>
-                <div class="chart-container">
-                    <canvas id="countryChart"></canvas>
+                <div class="two-column">
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="country-distribution"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Country</th>
+                                    <th>Customers</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="country-stats">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
             <!-- Slide 4: Subscription Analysis -->
             <section>
                 <h2>Subscription Plan Analysis</h2>
-                <div class="two-column">
-                    <div class="column">
-                        <canvas id="planDistributionChart" class="chart-container"></canvas>
+                <div class="three-column">
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="plan-distribution"></canvas>
+                        </div>
                     </div>
-                    <div class="column">
-                        <canvas id="planSpendChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="revenue-distribution"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Plan</th>
+                                    <th>Avg Spend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="plan-stats">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -83,50 +181,76 @@
             <section>
                 <h2>Customer Churn Analysis</h2>
                 <div class="two-column">
-                    <div class="column">
-                        <canvas id="churnByPlanChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="overall-churn"></canvas>
+                        </div>
                     </div>
-                    <div class="column">
-                        <canvas id="churnByCountryChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="plan-churn"></canvas>
+                        </div>
                     </div>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Churn Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="country-churn">
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
-            <!-- Slide 6: Revenue Insights -->
+            <!-- Slide 6: Customer Value Analysis -->
             <section>
-                <h2>Revenue Analysis</h2>
+                <h2>Customer Value Analysis</h2>
                 <div class="two-column">
-                    <div class="column">
-                        <canvas id="spendByCountryChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="country-spend"></canvas>
+                        </div>
                     </div>
-                    <div class="column">
-                        <canvas id="revenueByPlanChart" class="chart-container"></canvas>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="plan-spend-distribution"></canvas>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Slide 7: Recommendations -->
             <section>
-                <h2>Key Recommendations</h2>
-                <div style="text-align: left;">
-                    <h3>Key Findings</h3>
-                    <ul>
-                        <li>Premium plan has highest churn rate</li>
-                        <li>USA market shows strong growth potential</li>
-                        <li>Age group 25-34 is most valuable segment</li>
-                    </ul>
-                    <h3>Strategic Recommendations</h3>
-                    <ul>
-                        <li>Implement premium plan retention program</li>
-                        <li>Expand marketing in USA market</li>
-                        <li>Develop targeted offerings for 25-34 age group</li>
-                    </ul>
-                    <h3>Next Steps</h3>
-                    <ul>
-                        <li>Conduct customer satisfaction survey</li>
-                        <li>Develop new pricing strategy</li>
-                        <li>Launch targeted marketing campaign</li>
-                    </ul>
+                <h2>Key Insights and Recommendations</h2>
+                <div class="three-column">
+                    <div>
+                        <h3>Key Findings</h3>
+                        <ul>
+                            <li>Higher churn in Premium plans</li>
+                            <li>Strong growth in emerging markets</li>
+                            <li>Age group 31-40 most valuable</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Strategic Recommendations</h3>
+                        <ul>
+                            <li>Implement retention programs</li>
+                            <li>Optimize pricing tiers</li>
+                            <li>Expand geographic presence</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Next Steps</h3>
+                        <ul>
+                            <li>Launch A/B testing</li>
+                            <li>Develop loyalty program</li>
+                            <li>Enhance customer support</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </div>
@@ -137,303 +261,488 @@
         Reveal.initialize({
             hash: true,
             slideNumber: true,
-            transition: 'slide'
+            transition: 'slide',
+            width: 1200,
+            height: 700,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
         });
 
-        // Data from customer-data.csv
+        // Load and parse the CSV data
         const customerData = [
-            { id: 'C001', age: 25, gender: 'Female', country: 'USA', plan: 'Basic', spend: 29.99, churned: false },
-            { id: 'C002', age: 40, gender: 'Male', country: 'Canada', plan: 'Premium', spend: 59.99, churned: true },
-            { id: 'C003', age: 31, gender: 'Female', country: 'USA', plan: 'Standard', spend: 39.99, churned: false },
-            { id: 'C004', age: 22, gender: 'Male', country: 'UK', plan: 'Basic', spend: 25.99, churned: false },
-            { id: 'C005', age: 35, gender: 'Female', country: 'India', plan: 'Standard', spend: 41.50, churned: true },
-            { id: 'C006', age: 28, gender: 'Female', country: 'Germany', plan: 'Premium', spend: 65.00, churned: false },
-            { id: 'C007', age: 45, gender: 'Male', country: 'USA', plan: 'Premium', spend: 60.00, churned: true },
-            { id: 'C008', age: 38, gender: 'Female', country: 'Canada', plan: 'Standard', spend: 42.99, churned: false },
-            { id: 'C009', age: 30, gender: 'Male', country: 'India', plan: 'Basic', spend: 27.49, churned: false },
-            { id: 'C010', age: 50, gender: 'Female', country: 'UK', plan: 'Standard', spend: 44.00, churned: true }
+            {CustomerID: "C001", Age: 25, Gender: "Female", Country: "USA", SubscriptionPlan: "Basic", MonthlySpend: 29.99, Churned: "No"},
+            {CustomerID: "C002", Age: 40, Gender: "Male", Country: "Canada", SubscriptionPlan: "Premium", MonthlySpend: 59.99, Churned: "Yes"},
+            {CustomerID: "C003", Age: 31, Gender: "Female", Country: "USA", SubscriptionPlan: "Standard", MonthlySpend: 39.99, Churned: "No"},
+            {CustomerID: "C004", Age: 22, Gender: "Male", Country: "UK", SubscriptionPlan: "Basic", MonthlySpend: 25.99, Churned: "No"},
+            {CustomerID: "C005", Age: 35, Gender: "Female", Country: "India", SubscriptionPlan: "Standard", MonthlySpend: 41.50, Churned: "Yes"},
+            {CustomerID: "C006", Age: 28, Gender: "Female", Country: "Germany", SubscriptionPlan: "Premium", MonthlySpend: 65.00, Churned: "No"},
+            {CustomerID: "C007", Age: 45, Gender: "Male", Country: "USA", SubscriptionPlan: "Premium", MonthlySpend: 60.00, Churned: "Yes"},
+            {CustomerID: "C008", Age: 38, Gender: "Female", Country: "Canada", SubscriptionPlan: "Standard", MonthlySpend: 42.99, Churned: "No"},
+            {CustomerID: "C009", Age: 30, Gender: "Male", Country: "India", SubscriptionPlan: "Basic", MonthlySpend: 27.49, Churned: "No"},
+            {CustomerID: "C010", Age: 50, Gender: "Female", Country: "UK", SubscriptionPlan: "Standard", MonthlySpend: 44.00, Churned: "Yes"}
         ];
 
-        // Age Distribution Chart
-        const ageGroups = {
-            '<25': 0,
-            '25-34': 0,
-            '35-44': 0,
-            '45+': 0
-        };
+        // Data processing functions
+        function processData() {
+            // Age distribution
+            const ageGroups = {
+                '20-30': 0,
+                '31-40': 0,
+                '41-50': 0,
+                '50+': 0
+            };
+            
+            customerData.forEach(customer => {
+                if (customer.Age <= 30) ageGroups['20-30']++;
+                else if (customer.Age <= 40) ageGroups['31-40']++;
+                else if (customer.Age <= 50) ageGroups['41-50']++;
+                else ageGroups['50+']++;
+            });
 
-        customerData.forEach(customer => {
-            if (customer.age < 25) ageGroups['<25']++;
-            else if (customer.age < 35) ageGroups['25-34']++;
-            else if (customer.age < 45) ageGroups['35-44']++;
-            else ageGroups['45+']++;
-        });
+            // Gender distribution
+            const genderCount = {
+                'Male': 0,
+                'Female': 0
+            };
+            
+            customerData.forEach(customer => {
+                genderCount[customer.Gender]++;
+            });
 
-        new Chart(document.getElementById('ageChart'), {
-            type: 'bar',
-            data: {
-                labels: Object.keys(ageGroups),
-                datasets: [{
-                    label: 'Number of Customers',
-                    data: Object.values(ageGroups),
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Country distribution
+            const countryCount = {};
+            customerData.forEach(customer => {
+                countryCount[customer.Country] = (countryCount[customer.Country] || 0) + 1;
+            });
 
-        // Gender Distribution Chart
-        const genderCount = {
-            Male: customerData.filter(c => c.gender === 'Male').length,
-            Female: customerData.filter(c => c.gender === 'Female').length
-        };
+            // Plan distribution
+            const planCount = {};
+            customerData.forEach(customer => {
+                planCount[customer.SubscriptionPlan] = (planCount[customer.SubscriptionPlan] || 0) + 1;
+            });
 
-        new Chart(document.getElementById('genderChart'), {
-            type: 'pie',
-            data: {
-                labels: Object.keys(genderCount),
-                datasets: [{
-                    data: Object.values(genderCount),
-                    backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)'],
-                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Churn analysis
+            const churnByPlan = {};
+            const churnByCountry = {};
+            
+            customerData.forEach(customer => {
+                // By plan
+                if (!churnByPlan[customer.SubscriptionPlan]) {
+                    churnByPlan[customer.SubscriptionPlan] = { total: 0, churned: 0 };
+                }
+                churnByPlan[customer.SubscriptionPlan].total++;
+                if (customer.Churned === "Yes") {
+                    churnByPlan[customer.SubscriptionPlan].churned++;
+                }
 
-        // Country Distribution Chart
-        const countryCount = {};
-        customerData.forEach(customer => {
-            countryCount[customer.country] = (countryCount[customer.country] || 0) + 1;
-        });
+                // By country
+                if (!churnByCountry[customer.Country]) {
+                    churnByCountry[customer.Country] = { total: 0, churned: 0 };
+                }
+                churnByCountry[customer.Country].total++;
+                if (customer.Churned === "Yes") {
+                    churnByCountry[customer.Country].churned++;
+                }
+            });
 
-        new Chart(document.getElementById('countryChart'), {
-            type: 'bar',
-            data: {
-                labels: Object.keys(countryCount),
-                datasets: [{
-                    label: 'Number of Customers',
-                    data: Object.values(countryCount),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(255, 206, 86, 0.5)',
-                        'rgba(75, 192, 192, 0.5)',
-                        'rgba(153, 102, 255, 0.5)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            return {
+                ageGroups,
+                genderCount,
+                countryCount,
+                planCount,
+                churnByPlan,
+                churnByCountry
+            };
+        }
 
-        // Plan Distribution Chart
-        const planCount = {};
-        customerData.forEach(customer => {
-            planCount[customer.plan] = (planCount[customer.plan] || 0) + 1;
-        });
+        // Create charts
+        function createCharts(data) {
+            // Age Distribution Chart
+            new Chart(document.getElementById('age-distribution'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.ageGroups),
+                    datasets: [{
+                        label: 'Number of Customers',
+                        data: Object.values(data.ageGroups),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Age Distribution'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-        new Chart(document.getElementById('planDistributionChart'), {
-            type: 'pie',
-            data: {
-                labels: Object.keys(planCount),
-                datasets: [{
-                    data: Object.values(planCount),
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(75, 192, 192, 0.5)',
-                        'rgba(255, 206, 86, 0.5)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Gender Distribution Chart
+            new Chart(document.getElementById('gender-distribution'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.genderCount),
+                    datasets: [{
+                        data: Object.values(data.genderCount),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Gender Distribution'
+                        }
+                    }
+                }
+            });
 
-        // Average Spend by Plan
-        const planSpend = {};
-        customerData.forEach(customer => {
-            if (!planSpend[customer.plan]) {
-                planSpend[customer.plan] = { total: 0, count: 0 };
-            }
-            planSpend[customer.plan].total += customer.spend;
-            planSpend[customer.plan].count++;
-        });
+            // Country Distribution Chart
+            new Chart(document.getElementById('country-distribution'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.countryCount),
+                    datasets: [{
+                        data: Object.values(data.countryCount),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Customer Distribution by Country'
+                        }
+                    }
+                }
+            });
 
-        const avgSpendByPlan = Object.keys(planSpend).map(plan => ({
-            plan,
-            avg: planSpend[plan].total / planSpend[plan].count
-        }));
+            // Plan Distribution Chart
+            new Chart(document.getElementById('plan-distribution'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.planCount),
+                    datasets: [{
+                        label: 'Number of Customers',
+                        data: Object.values(data.planCount),
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Subscription Plan Distribution'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-        new Chart(document.getElementById('planSpendChart'), {
-            type: 'bar',
-            data: {
-                labels: avgSpendByPlan.map(item => item.plan),
-                datasets: [{
-                    label: 'Average Monthly Spend ($)',
-                    data: avgSpendByPlan.map(item => item.avg),
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Churn Analysis Charts
+            const churnRatesByPlan = Object.entries(data.churnByPlan).map(([plan, stats]) => ({
+                plan,
+                rate: (stats.churned / stats.total * 100).toFixed(1)
+            }));
 
-        // Churn by Plan
-        const churnByPlan = {};
-        customerData.forEach(customer => {
-            if (!churnByPlan[customer.plan]) {
-                churnByPlan[customer.plan] = { total: 0, churned: 0 };
-            }
-            churnByPlan[customer.plan].total++;
-            if (customer.churned) churnByPlan[customer.plan].churned++;
-        });
+            new Chart(document.getElementById('plan-churn'), {
+                type: 'bar',
+                data: {
+                    labels: churnRatesByPlan.map(item => item.plan),
+                    datasets: [{
+                        label: 'Churn Rate (%)',
+                        data: churnRatesByPlan.map(item => item.rate),
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Churn Rate by Subscription Plan'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
 
-        const churnRateByPlan = Object.keys(churnByPlan).map(plan => ({
-            plan,
-            rate: (churnByPlan[plan].churned / churnByPlan[plan].total) * 100
-        }));
+            // Overall Churn Chart
+            const totalChurned = customerData.filter(customer => customer.Churned === "Yes").length;
+            const totalActive = customerData.length - totalChurned;
+            
+            new Chart(document.getElementById('overall-churn'), {
+                type: 'pie',
+                data: {
+                    labels: ['Active', 'Churned'],
+                    datasets: [{
+                        data: [totalActive, totalChurned],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(255, 99, 132, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Overall Churn Rate'
+                        }
+                    }
+                }
+            });
 
-        new Chart(document.getElementById('churnByPlanChart'), {
-            type: 'bar',
-            data: {
-                labels: churnRateByPlan.map(item => item.plan),
-                datasets: [{
-                    label: 'Churn Rate (%)',
-                    data: churnRateByPlan.map(item => item.rate),
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Country Spend Chart
+            const countrySpend = {};
+            customerData.forEach(customer => {
+                if (!countrySpend[customer.Country]) {
+                    countrySpend[customer.Country] = {
+                        total: 0,
+                        count: 0
+                    };
+                }
+                countrySpend[customer.Country].total += customer.MonthlySpend;
+                countrySpend[customer.Country].count++;
+            });
 
-        // Churn by Country
-        const churnByCountry = {};
-        customerData.forEach(customer => {
-            if (!churnByCountry[customer.country]) {
-                churnByCountry[customer.country] = { total: 0, churned: 0 };
-            }
-            churnByCountry[customer.country].total++;
-            if (customer.churned) churnByCountry[customer.country].churned++;
-        });
+            const countryAvgSpend = Object.entries(countrySpend).map(([country, stats]) => ({
+                country,
+                avgSpend: stats.total / stats.count
+            })).sort((a, b) => b.avgSpend - a.avgSpend);
 
-        const churnRateByCountry = Object.keys(churnByCountry).map(country => ({
-            country,
-            rate: (churnByCountry[country].churned / churnByCountry[country].total) * 100
-        }));
+            new Chart(document.getElementById('country-spend'), {
+                type: 'bar',
+                data: {
+                    labels: countryAvgSpend.map(item => item.country),
+                    datasets: [{
+                        label: 'Average Monthly Spend ($)',
+                        data: countryAvgSpend.map(item => item.avgSpend),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Average Monthly Spend by Country'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-        new Chart(document.getElementById('churnByCountryChart'), {
-            type: 'bar',
-            data: {
-                labels: churnRateByCountry.map(item => item.country),
-                datasets: [{
-                    label: 'Churn Rate (%)',
-                    data: churnRateByCountry.map(item => item.rate),
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Plan Spend Distribution Chart
+            const planSpendData = {};
+            customerData.forEach(customer => {
+                if (!planSpendData[customer.SubscriptionPlan]) {
+                    planSpendData[customer.SubscriptionPlan] = [];
+                }
+                planSpendData[customer.SubscriptionPlan].push(customer.MonthlySpend);
+            });
 
-        // Average Spend by Country
-        const spendByCountry = {};
-        customerData.forEach(customer => {
-            if (!spendByCountry[customer.country]) {
-                spendByCountry[customer.country] = { total: 0, count: 0 };
-            }
-            spendByCountry[customer.country].total += customer.spend;
-            spendByCountry[customer.country].count++;
-        });
+            // Sort plans by average spend
+            const planAvgSpend = Object.entries(planSpendData).map(([plan, spends]) => ({
+                plan,
+                avgSpend: spends.reduce((sum, val) => sum + val, 0) / spends.length
+            })).sort((a, b) => b.avgSpend - a.avgSpend);
 
-        const avgSpendByCountry = Object.keys(spendByCountry).map(country => ({
-            country,
-            avg: spendByCountry[country].total / spendByCountry[country].count
-        }));
+            new Chart(document.getElementById('plan-spend-distribution'), {
+                type: 'bar',
+                data: {
+                    labels: planAvgSpend.map(item => item.plan),
+                    datasets: [{
+                        label: 'Average Monthly Spend ($)',
+                        data: planAvgSpend.map(item => item.avgSpend),
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Average Monthly Spend by Plan'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-        new Chart(document.getElementById('spendByCountryChart'), {
-            type: 'bar',
-            data: {
-                labels: avgSpendByCountry.map(item => item.country),
-                datasets: [{
-                    label: 'Average Monthly Spend ($)',
-                    data: avgSpendByCountry.map(item => item.avg),
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            // Revenue Distribution Chart
+            const planRevenue = {};
+            customerData.forEach(customer => {
+                if (!planRevenue[customer.SubscriptionPlan]) {
+                    planRevenue[customer.SubscriptionPlan] = 0;
+                }
+                planRevenue[customer.SubscriptionPlan] += customer.MonthlySpend;
+            });
 
-        // Revenue by Plan
-        const revenueByPlan = {};
-        customerData.forEach(customer => {
-            if (!revenueByPlan[customer.plan]) {
-                revenueByPlan[customer.plan] = 0;
-            }
-            revenueByPlan[customer.plan] += customer.spend;
-        });
+            const totalRevenue = Object.values(planRevenue).reduce((sum, val) => sum + val, 0);
+            const planRevenuePercentages = Object.entries(planRevenue).map(([plan, revenue]) => ({
+                plan,
+                percentage: (revenue / totalRevenue * 100).toFixed(1)
+            }));
 
-        new Chart(document.getElementById('revenueByPlanChart'), {
-            type: 'bar',
-            data: {
-                labels: Object.keys(revenueByPlan),
-                datasets: [{
-                    label: 'Total Revenue ($)',
-                    data: Object.values(revenueByPlan),
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
+            new Chart(document.getElementById('revenue-distribution'), {
+                type: 'pie',
+                data: {
+                    labels: planRevenuePercentages.map(item => item.plan),
+                    datasets: [{
+                        data: planRevenuePercentages.map(item => parseFloat(item.percentage)),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Revenue Distribution by Plan'
+                        }
+                    }
+                }
+            });
+
+            // Update tables
+            updateTables(data);
+        }
+
+        function updateTables(data) {
+            // Country stats table
+            const countryStatsBody = document.getElementById('country-stats');
+            countryStatsBody.innerHTML = Object.entries(data.countryCount)
+                .map(([country, count]) => `
+                    <tr>
+                        <td>${country}</td>
+                        <td>${count}</td>
+                        <td>${((count / customerData.length) * 100).toFixed(1)}%</td>
+                    </tr>
+                `).join('');
+
+            // Plan stats table
+            const planStatsBody = document.getElementById('plan-stats');
+            const planAverages = {};
+            customerData.forEach(customer => {
+                if (!planAverages[customer.SubscriptionPlan]) {
+                    planAverages[customer.SubscriptionPlan] = {
+                        total: 0,
+                        count: 0
+                    };
+                }
+                planAverages[customer.SubscriptionPlan].total += customer.MonthlySpend;
+                planAverages[customer.SubscriptionPlan].count++;
+            });
+
+            planStatsBody.innerHTML = Object.entries(planAverages)
+                .map(([plan, stats]) => `
+                    <tr>
+                        <td>${plan}</td>
+                        <td>$${(stats.total / stats.count).toFixed(2)}</td>
+                    </tr>
+                `).join('');
+
+            // Country churn table
+            const countryChurnBody = document.getElementById('country-churn');
+            countryChurnBody.innerHTML = Object.entries(data.churnByCountry)
+                .map(([country, stats]) => `
+                    <tr>
+                        <td>${country}</td>
+                        <td>${((stats.churned / stats.total) * 100).toFixed(1)}%</td>
+                    </tr>
+                `).join('');
+        }
+
+        // Initialize the presentation
+        document.addEventListener('DOMContentLoaded', function() {
+            const processedData = processData();
+            createCharts(processedData);
         });
     </script>
 </body>

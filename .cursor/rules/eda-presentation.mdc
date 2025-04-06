@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# EDA Slide Generator
+
+## When
+user types: "Create presentation for {project_name}"
+
+## If
+{project_name} is not provided
+
+## Then
+Inform the user: "Please provide a project name. Usage: Create presentation for {project_name}"
+
+## If
+`projects/{project_name}` does not exist
+
+## Then
+Inform the user: "No project named '{project_name}' found in the projects folder."
+
+## If
+`projects/{project_name}/data/` does not exist  
+or `projects/{project_name}/data/` is empty
+
+## Then
+Inform the user: "Missing or empty data folder in 'projects/{project_name}'. Please ensure data files are placed in 'projects/{project_name}/data/'"
+
+## Then
+You are an AI assistant helping generate an EDA presentation using Reveal.js. Based on the data in `projects/{project_name}/data/`, create a high-level presentation outline.
+
+Optionally, also consider any additional notes in `projects/{project_name}/instructions.md`.
+
+For each slide, provide:
+- Title
+- Purpose
+- Description (e.g., show tables, graphs, images)
+
+Save the result in `projects/{project_name}/agenda.md`.

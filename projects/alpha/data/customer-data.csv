@@ -1,0 +1,11 @@
+CustomerID,Age,Gender,Country,SubscriptionPlan,MonthlySpend,Churned
+C001,25,Female,USA,Basic,29.99,No
+C002,40,Male,Canada,Premium,59.99,Yes
+C003,31,Female,USA,Standard,39.99,No
+C004,22,Male,UK,Basic,25.99,No
+C005,35,Female,India,Standard,41.50,Yes
+C006,28,Female,Germany,Premium,65.00,No
+C007,45,Male,USA,Premium,60.00,Yes
+C008,38,Female,Canada,Standard,42.99,No
+C009,30,Male,India,Basic,27.49,No
+C010,50,Female,UK,Standard,44.00,Yes

@@ -1,0 +1,52 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Generate Reveal.js Slides
+
+## When
+user types: "Proceed to next step for {project_name}"
+
+## If
+`projects/{project_name}/detailed_plan.md` exists
+
+## Then
+Before generating `projects/{project_name}/index.html`:
+
+### Phase 1: Asset Resolution
+
+1. Determine which JavaScript and CSS files are required for the presentation (e.g., Reveal.js core, plugins, themes, Chart.js, highlight.js, etc.).
+2. For each required asset:
+   - Check if the file exists in the root-level `assets/` folder.
+   - If not, download it from the official source and save it into `assets/`.
+3. Create a list of full relative paths to these asset files **from the perspective of `projects/{project_name}/index.html`**.
+   - Example entries:
+     - `../../assets/reveal.js`
+     - `../../assets/chart.min.js`
+     - `../../assets/reveal.css`
+     - `../../assets/theme/black.css`
+     - `../../assets/plugin/markdown/markdown.js`
+4. Use only these local paths when embedding `<script>` and `<link>` tags in `index.html`.
+
+### Phase 2: HTML Generation
+
+- Use the detailed plan in `projects/{project_name}/detailed_plan.md` to generate a **single** file:
+  - `projects/{project_name}/index.html`
+- Inline all slides as `<section>` elements.
+- Embed all required JavaScript and CSS files using the paths resolved in Phase 1.
+- Do **not** generate or reference any external CDN URLs.
+- Do **not** create individual slide files.
+- **Always use the `white.css` theme for Reveal.js**
+- **To avoid vertical overflow, layout content horizontally whenever possible**:
+  - Avoid stacking too many elements vertically on a single slide.
+
+### Data Handling:
+
+- Do not use `fetch()`, `XMLHttpRequest`, or any runtime access to local data files.
+- Instead, parse all data from `projects/{project_name}/data/` during generation.
+- Embed the parsed data directly into `index.html` as inline JavaScript constants or JSON.
+
+### Hosting Note:
+
+- The final `index.html` must be fully static and self-contained, and render correctly in any modern browser when opened via `file://`.

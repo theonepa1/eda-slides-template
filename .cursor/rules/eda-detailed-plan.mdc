@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Expand Agenda into Detailed Plan
+
+## When
+user types: "Proceed to next step for {project_name}"
+
+## If
+`projects/{project_name}/agenda.md` exists  
+and `projects/{project_name}/detailed_plan.md` does not exist
+
+## Then
+Based on the content in `projects/{project_name}/agenda.md`, create a detailed plan in `projects/{project_name}/detailed_plan.md`.
+
+Optionally, also consider any additional notes in `projects/{project_name}/instructions.md`.
+
+For each slide, describe:
+- Data transformations
+- Graph types
+- Table layouts
+- Image placement (if any)
